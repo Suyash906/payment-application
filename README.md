@@ -1,37 +1,25 @@
-**Introduction**
+**Assumtions**
+- The test cases are written in the main function.
+- If the final output is true, then the payment was done successfully
+- If the final output is false, then atleast one of the following situation was encountered
+  - The amount was negative or more than the card balance
+  - The userId was NULL, non-numeric or was not present in Database
+  - The userName was NULL or did not match with Database
+  - The billingAddress was NULL or did not match with the Database
+  - The cardNumber was NULL, non-numeric or did not have 16 digits
 
-This assignment involves working on an online payment processing application with some existing code in Java that can be reused or replaced with new code as necessary. In terms of the audience, currency, address and payment solutions, you can assume the application is targeted for US customers only.
+**Database Updates**
+- Added two new fields cardNumber and Balance
 
-**Goal**
-
-The goal of this assignment is to fortify the application in these major areas:
-- Development/Coding Standards (for Project, Packages, Classes, Objects, Methods, variables, etc.)
-  - Organization
-  - Naming
-  - Design (OOD)
-  - Accessibility
-  - Exception Handling
-  - Logging
-  - Validations
-- Usage of
-  - Data Structures
-  - Design Patterns
-- Implementation Improvements
-  - Performance
-  - Concurrency
-  - Re-usability
-  - Security
-- Expanding Application Scope
-  - Add more modules (not necessarily with implementations) to cover other interactions imaginable as part of a payment processing application.
-
-**Testing**
-
-Add necessary test cases for various aspects of your application ensuring edge cases are also handled.
-
-**Notes**
-
-- Expect to spend around 2 hours on this assignment
-- State your assumptions
-- Provide comments on changes you make (as necessary)
-- Feel free to use 3rd party libraries/APIs
-- You may choose to rewrite in a different language of choice
+**Design Patterns Used**
+- Chain of Responsibility Pattern to create logs
+  - The stater code does not have any logging.
+  - If there is an need to write logs in multiple places(console, File, S3, etc), then Chain of Responsibility can be used with multiple handler in a chain writing logs in seperate places.
+  - The logging has been implemented for a small section only as a sample. Following the similar format the logging can be added to entire code. 
+- Factory Design Pattern to read User Details from Database
+  - In the starter code, the data was read from a text file.
+  - If in future the data source changes or there is a requirement to fetch data from multiple scouces, then there will be a lot of modification in the existing code.
+  - The factory design pattern solved this problem sucessfully since it allows the making of objects with no exposure to instantation logic. Also it can be easily extended without modification in the existing code.
+- Proxy Pattern Request Parameter Validation
+  - The request parameter in the input request could be missing, incorrect format or type. In such cases, the request must not be forwarded
+  - There could also be a requirement to add authentication logic to access the Payment Application. In such case we can write the authentication logic in the Proxy class.
